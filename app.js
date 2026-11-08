@@ -30,33 +30,39 @@ const stage=$('#three-stage');let scene,camera,renderer,controls,raf,autoRotate=
 function latheBody(profile,material,segments=48){const pts=profile.map(([r,y])=>new THREE.Vector2(r,y));const mesh=new THREE.Mesh(new THREE.LatheGeometry(pts,segments),material);mesh.castShadow=true;mesh.receiveShadow=true;return mesh}
 function makeOutfit(){
  const root=new THREE.Group();
- const skin=new THREE.MeshStandardMaterial({color:0x9b8c7d,roughness:.48,metalness:.08});
- const cloth=new THREE.MeshStandardMaterial({color:0x252525,roughness:.76,metalness:.08});
- const trim=new THREE.MeshStandardMaterial({color:0x77716b,roughness:.6,metalness:.12});
+ const mannequin=new THREE.MeshStandardMaterial({color:0x08090a,roughness:.24,metalness:.62});
+ const cloth=new THREE.MeshStandardMaterial({color:0x252525,roughness:.78,metalness:.04});
+ const seam=new THREE.MeshStandardMaterial({color:0x77716b,roughness:.58,metalness:.16});
+ const glass=new THREE.MeshPhysicalMaterial({color:0x9ba4aa,roughness:.12,metalness:.22,transparent:true,opacity:.28,clearcoat:1});
  colourMaterials.push(cloth);
  const add=(geo,mat,pos,rot)=>{const m=new THREE.Mesh(geo,mat);m.position.set(...pos);if(rot)m.rotation.set(...rot);m.castShadow=true;m.receiveShadow=true;root.add(m);return m};
- // Neck and head
- add(new THREE.CylinderGeometry(.105,.12,.2,32),skin,[0,1.86,0]);
- add(new THREE.SphereGeometry(.18,40,32),skin,[0,2.12,0],[0,0,0]);
- // Oversized tee: tapered torso, broad shoulder line and relaxed sleeves
- const shirt=latheBody([[.29,.77],[.31,.83],[.34,1.05],[.37,1.42],[.39,1.62],[.43,1.69],[.37,1.75],[.15,1.78]],cloth);
- shirt.scale.z=.62;root.add(shirt);
- const sleeveGeo=new THREE.CylinderGeometry(.105,.145,.48,32,1,false);
- const left=add(sleeveGeo,cloth,[-.43,1.53,0],[0,0,-.3]);left.scale.set(1,1,.92);
- const right=add(sleeveGeo,cloth,[.43,1.53,0],[0,0,.3]);right.scale.set(1,1,.92);
- add(new THREE.TorusGeometry(.115,.018,10,36),trim,[0,1.765,0]);
- // Relaxed trousers with subtle tapered legs
- const leftLeg=latheBody([[.105,.04],[.12,.12],[.13,.42],[.145,.75],[.16,.91]],cloth,32);leftLeg.position.x=-.17;root.add(leftLeg);
- const rightLeg=latheBody([[.105,.04],[.12,.12],[.13,.42],[.145,.75],[.16,.91]],cloth,32);rightLeg.position.x=.17;root.add(rightLeg);
- const belt=add(new THREE.CylinderGeometry(.315,.31,.07,48),trim,[0,.82,0]);belt.scale.z=.61;
- const shoeMat=new THREE.MeshStandardMaterial({color:0x171717,roughness:.9});
- add(new THREE.BoxGeometry(.24,.12,.4),shoeMat,[-.17,.055,.08]);
- add(new THREE.BoxGeometry(.24,.12,.4),shoeMat,[.17,.055,.08]);
- // Hands and cuff detail
- add(new THREE.SphereGeometry(.085,24,18),skin,[-.49,1.25,0]);
- add(new THREE.SphereGeometry(.085,24,18),skin,[.49,1.25,0]);
- add(new THREE.TorusGeometry(.105,.012,8,32),trim,[-.49,1.31,0],[Math.PI/2,0,0]);
- add(new THREE.TorusGeometry(.105,.012,8,32),trim,[.49,1.31,0],[Math.PI/2,0,0]);
+ // Featureless display mannequin: smooth head, athletic torso and relaxed limbs.
+ add(new THREE.SphereGeometry(.185,40,32),mannequin,[0,2.12,0]);
+ add(new THREE.CylinderGeometry(.105,.12,.19,32),mannequin,[0,1.91,0]);
+ const body=latheBody([[.22,.85],[.27,1.02],[.31,1.34],[.34,1.59],[.27,1.72],[.13,1.78]],mannequin);body.scale.z=.62;root.add(body);
+ add(new THREE.SphereGeometry(.31,32,24),mannequin,[0,1.56,0],[0,0,0]).scale.set(1,.52,.62);
+ const armGeo=new THREE.CylinderGeometry(.075,.105,.7,28,1);
+ add(armGeo,mannequin,[-.39,1.36,0],[0,0,-.16]);
+ add(armGeo,mannequin,[.39,1.36,0],[0,0,.16]);
+ add(new THREE.SphereGeometry(.085,24,18),mannequin,[-.43,.99,0]);
+ add(new THREE.SphereGeometry(.085,24,18),mannequin,[.43,.99,0]);
+ const legGeo=new THREE.CylinderGeometry(.105,.09,.87,32,1);
+ add(legGeo,mannequin,[-.15,.45,0]);
+ add(legGeo,mannequin,[.15,.45,0]);
+ add(new THREE.BoxGeometry(.22,.1,.34),mannequin,[-.15,.035,.08]);
+ add(new THREE.BoxGeometry(.22,.1,.34),mannequin,[.15,.035,.08]);
+ // Oversized tee layer and sleeves, with relaxed straight-leg trousers.
+ const shirt=latheBody([[.285,.91],[.32,1.02],[.35,1.36],[.39,1.58],[.43,1.67],[.35,1.74],[.14,1.78]],cloth);shirt.scale.z=.64;root.add(shirt);
+ const sleeve=new THREE.CylinderGeometry(.12,.15,.48,32,1);
+ add(sleeve,cloth,[-.43,1.51,0],[0,0,-.28]);
+ add(sleeve,cloth,[.43,1.51,0],[0,0,.28]);
+ const leftLeg=latheBody([[.11,.035],[.12,.12],[.135,.43],[.15,.78],[.16,.91]],cloth,32);leftLeg.position.x=-.16;root.add(leftLeg);
+ const rightLeg=latheBody([[.11,.035],[.12,.12],[.135,.43],[.15,.78],[.16,.91]],cloth,32);rightLeg.position.x=.16;root.add(rightLeg);
+ const waistband=add(new THREE.CylinderGeometry(.32,.31,.065,48),seam,[0,.91,0]);waistband.scale.z=.64;
+ // Circular boutique display plinth with a glass-like top and brushed-metal rim.
+ const base=add(new THREE.CylinderGeometry(.78,.78,.055,80),glass,[0,-.045,0]);
+ const rim=add(new THREE.TorusGeometry(.77,.018,12,80),seam,[0,-.018,0]);rim.rotation.x=Math.PI/2;
+ const foot=add(new THREE.CylinderGeometry(.19,.24,.12,48),seam,[0,.035,0]);
  return root;
 }
 function initStudio(){
