@@ -1,5 +1,4 @@
-import { defineConfig } from 'vite';
-export default defineConfig({
-  server: { host: '0.0.0.0' },
-  build: { outDir: 'dist', emptyOutDir: true }
-});
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+// base './' makes asset paths work on GitHub Pages (any repo name)
+export default defineConfig({ base: './', plugins: [react()] })

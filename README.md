@@ -1,29 +1,23 @@
-# AURAÈ — Fashion House
+# AURAE — 3D Showroom
+React + Vite + React Three Fiber. Static, GitHub Pages ready. Orders go to WhatsApp.
 
-A fresh, responsive fashion storefront and interactive 3D studio.
-
-## Experience
-- Editorial, dark-mode storefront with responsive layouts
-- Product category filters and live search that work together
-- Shopping bag with quantity controls, remove actions and WhatsApp enquiry checkout
-- Interactive Three.js outfit preview with 360° orbit, zoom, auto-rotation, reset and colourways
-- GLB model support: add your own production garment model at `public/models/obsidian_black_boutique_mannequin_reference_v2.glb`
-- Procedural 3D outfit preview shown until a custom GLB is supplied
-- Keyboard escape handling, accessible control labels and reduced-motion styling
-
-## Run locally
-```bash
+## Run
+```
 npm install
-npm run dev
+npm run dev        # local
+npm run build      # production build -> dist/
+npm run deploy     # builds + publishes dist/ to the gh-pages branch
 ```
+Then in GitHub: Settings → Pages → Branch `gh-pages`. (`base: './'` in vite.config.js keeps asset paths working.)
 
-## Production build
-```bash
-npm run build
-```
+## Set your WhatsApp number
+`src/config.js` → `WHATSAPP_NUMBER = "234XXXXXXXXXX"` (the only place it appears).
 
-## Add a custom 3D garment
-Create `public/models/` and add a model named `obsidian_black_boutique_mannequin_reference_v2.glb`. Use a centred, upright GLB with the full outfit visible. The studio will automatically load it in place of the procedural preview.
+## Add your real 3D models
+Drop these files in `public/models/` — no code change needed. Each one replaces its placeholder automatically:
+`mannequin.glb`, `jersey-23.glb`, `aurae-tee.glb`, `faith-hoodie.glb`, `cargo-pants.glb`, `aurae-cap.glb` (`longsleeve.glb`, `beanie.glb` optional).
+Export every garment at the mannequin's scale and origin (feet at y=0) so it lines up. Edit names/prices in `src/data/products.js`.
+Missing files? The site shows a placeholder mannequin dressed with your product artwork instead.
 
-## Before launch
-The catalogue photography and product descriptions are starter content. Confirm the real product range, imagery, contact number, sizes, delivery terms and prices before accepting orders. Prices are intentionally enquiry-based until confirmed.
+## Structure
+`src/data/products.js` products + presets · `src/state/cart.jsx` cart · `src/utils/whatsapp.js` message builder · `src/components/` Showroom, ThreeDViewer, Mannequin, CartDrawer
