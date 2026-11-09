@@ -1,23 +1,33 @@
-# AURAE — 3D Showroom
-React + Vite + React Three Fiber. Static, GitHub Pages ready. Orders go to WhatsApp.
+# AURAÈ — Dreams in Motion
 
-## Run
-```
+The AURAÈ fashion house experience, restored from the original project and kept in a separate repository.
+
+## Pages
+- Home
+- Shop and Collections
+- Individual product details
+- 3D Studio
+- Lookbook
+- Our Story
+
+## 3D Studio
+Built with React Three Fiber and Three.js. Visitors can rotate the mannequin, switch front/back views, reset the camera, select garments, choose sizes, and assemble a look. The cart persists between pages and enquiries continue through WhatsApp.
+
+The viewer includes procedural mannequin and garment fallbacks. Production GLB files can be added under `public/models/` using the filenames configured in `src/data/products.js`.
+
+## Run locally
+```bash
 npm install
-npm run dev        # local
-npm run build      # production build -> dist/
-npm run deploy     # builds + publishes dist/ to the gh-pages branch
+npm run dev
 ```
-Then in GitHub: Settings → Pages → Branch `gh-pages`. (`base: './'` in vite.config.js keeps asset paths working.)
 
-## Set your WhatsApp number
-`src/config.js` → `WHATSAPP_NUMBER = "234XXXXXXXXXX"` (the only place it appears).
+## Build
+```bash
+npm run build
+```
 
-## Add your real 3D models
-Drop these files in `public/models/` — no code change needed. Each one replaces its placeholder automatically:
-`mannequin.glb`, `jersey-23.glb`, `aurae-tee.glb`, `faith-hoodie.glb`, `cargo-pants.glb`, `aurae-cap.glb` (`longsleeve.glb`, `beanie.glb` optional).
-Export every garment at the mannequin's scale and origin (feet at y=0) so it lines up. Edit names/prices in `src/data/products.js`.
-Missing files? The site shows a placeholder mannequin dressed with your product artwork instead.
+## Live publishing
+The `.github/workflows/deploy-pages.yml` workflow builds the site and publishes it to GitHub Pages whenever changes reach `main`. The Vite base path is relative so the project works from the repository Pages URL.
 
-## Structure
-`src/data/products.js` products + presets · `src/state/cart.jsx` cart · `src/utils/whatsapp.js` message builder · `src/components/` Showroom, ThreeDViewer, Mannequin, CartDrawer
+## Brand and order details
+Product names, descriptions, sizes and model paths live in `src/data/products.js`. The WhatsApp contact is configured once in `src/config.js`. Prices remain enquiry-based until confirmed.
