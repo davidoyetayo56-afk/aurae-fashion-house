@@ -32,17 +32,17 @@ function AppShell() {
   }, []);
 
   useEffect(() => {
-    const names = { home: "Dreams in Motion", shop: "Shop", collections: "Collections", studio: "3D Studio", lookbook: "Lookbook", about: "Our Story", product: selected?.name || "The Piece" };
-    document.title = "AURAÈ — " + (names[route.page] || "Independent Streetwear");
+    const names = { home: "Home", shop: "Shop", collections: "Collection 01", studio: "3D Studio", lookbook: "Lookbook", about: "Our Story", product: selected?.name || "Piece" };
+    document.title = "AURAÈ — " + (names[route.page] || "Streetwear");
   }, [route.page, selected?.name]);
 
-  const links = [["shop","SHOP"],["collections","COLLECTIONS"],["studio","3D STUDIO"],["lookbook","LOOKBOOK"],["about","OUR STORY"]];
+  const links = [["shop","SHOP"],["collections","COLLECTION"],["studio","3D STUDIO"],["lookbook","LOOKBOOK"],["about","OUR STORY"]];
 
-  return <div className="site">
-    <div className="topline"><span>INDEPENDENT STREETWEAR</span><i /> <span>DREAMS · FAITH · YOU</span></div>
+  return <div className={"site" + (route.page === "home" ? " home-site" : "")}>
+    <div className="topline"><span>INDEPENDENT STREETWEAR</span><i /><span>DREAMS · FAITH · YOU</span></div>
     <header className="header">
       <a className="wordmark" href="#/" aria-label="AURAÈ home">AURAÈ<span>✳</span></a>
-      <button className="menu-toggle glass" type="button" onClick={() => setMenuOpen((value) => !value)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "×" : "☰"}</button>
+      <button className="menu-toggle glass" type="button" onClick={() => setMenuOpen((v) => !v)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "×" : "☰"}</button>
       <nav className={"navlinks" + (menuOpen ? " open" : "")} aria-label="Main navigation">
         {links.map(([page,label]) => <a key={page} className={route.page === page ? "active" : ""} href={"#/" + page}>{label}</a>)}
       </nav>
@@ -54,13 +54,12 @@ function AppShell() {
       {route.page === "shop" && <CatalogPage title="THE PIECES." eyebrow="AURAÈ / COLLECTION 01" items={products} />}
       {route.page === "collections" && <CatalogPage title="THE NEW DROP." eyebrow="AURAÈ / THE COLLECTION" items={products} />}
       {route.page === "studio" && <StudioPage />}
-      {route.page === "product" && selected && <ProductPage product={selected} onAdd={(product,size) => add(product,size)} />}
+      {route.page === "product" && selected && <ProductPage product={selected} onAdd={(p,size) => add(p,size)} />}
       {route.page === "lookbook" && <LookbookPage />}
       {route.page === "about" && <AboutPage />}
       {route.page === "product" && !selected && <EmptyPage title="PIECE NOT FOUND." />}
-      {!["home","shop","collections","studio","product","lookbook","about"].includes(route.page) && <EmptyPage title="THIS PAGE ISN'T HERE." />}
+      {!["home","shop","collections","studio","product","lookbook","about"].includes(route.page) && <EmptyPage title="PAGE NOT FOUND." />}
     </main>
-
     {route.page !== "home" && route.page !== "studio" && <Footer />}
     <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     {["shop","collections","product","studio"].includes(route.page) && <FloatingTote count={count} onOpen={() => setCartOpen(true)} />}
@@ -68,69 +67,72 @@ function AppShell() {
 }
 
 function HomePage() {
-  return <div className="home-page">
-    <section className="home-hero">
-      <div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" />
-      <div className="hero-copy">
-        <p className="eyebrow">DREAMS. FAITH. YOU.</p>
-        <h1>WEAR YOUR<br/><i>OWN STORY.</i></h1>
-        <p>Independent streetwear for the ones becoming something more. Thoughtful details. Distinctive graphics. A point of view that belongs to you.</p>
-        <div className="hero-actions"><a className="pill primary" href="#/shop">EXPLORE THE DROP ↗</a><a className="pill outline" href="#/studio">ENTER 3D STUDIO <span>✳</span></a></div>
-      </div>
-      <div className="hero-side-note"><span>COLLECTION 01</span><span>EST. AURAÈ</span></div>
-      <div className="hero-bottom"><span>01 — 03 / THE PIECES</span><span>SCROLL TO EXPLORE ↓</span></div>
-    </section>
-    <section className="home-intro">
-      <span className="eyebrow">A DIFFERENT KIND OF STREETWEAR</span>
-      <h2>Made for the<br/><i>becoming.</i></h2>
-      <p>Dreams are the vision. Faith is the anchor. You are the becoming. Every AURAÈ piece is a reminder to move with intention.</p>
-      <a className="textlink" href="#/about">DISCOVER OUR STORY ↗</a>
-    </section>
-    <section className="home-products">
-      <div className="section-heading"><div><span className="eyebrow">COLLECTION 01</span><h2>THE NEW <i>DROP.</i></h2></div><a className="textlink" href="#/shop">VIEW ALL PIECES ↗</a></div>
-      <ProductGrid items={products.slice(0,3)} />
-    </section>
-    <section className="studio-callout"><div><span className="eyebrow">AURAÈ / DIGITAL SHOWROOM</span><h2>See it.<br/><i>Style it.</i></h2><p>Step into the 3D studio and build your own look on our virtual mannequin.</p><a className="pill primary" href="#/studio">ENTER THE 3D STUDIO ↗</a></div><div className="callout-orb"><span>AURAÈ</span><small>INTERACTIVE<br/>FASHION</small></div></section>
+  return <div className="home-premium-layout">
+    <div className="home-premium-shade" />
+    <div className="home-premium-kicker">DREAMS · FAITH · YOU</div>
+    <div className="home-premium-copy">
+      <p className="eyebrow">AURAÈ / COLLECTION 01</p>
+      <h1>AURAÈ</h1>
+      <p className="home-premium-subtitle">WEAR YOUR OWN STORY.</p>
+      <a className="home-premium-cta" href="#/shop">EXPLORE THE COLLECTION <span>↗</span></a>
+    </div>
+    <div className="home-premium-tiles">
+      {products.slice(0,4).map((p,i) => <a className="home-premium-tile" key={p.id} href={"#/product/"+p.id}>
+        <img src={p.image} alt={p.name} loading={i===0?"eager":"lazy"} />
+        <span className="home-premium-tile-shade" />
+        <span className="home-premium-tile-number">0{i+1} / AURAÈ</span>
+        <span className="home-premium-tile-copy"><strong>{p.name}</strong><small>{p.category.toUpperCase()} · COLLECTION 01</small></span>
+        <span className="home-premium-tile-arrow">↗</span>
+      </a>)}
+    </div>
   </div>;
 }
 
 function CatalogPage({ title, eyebrow, items }) {
   return <section className="catalog">
     <p className="eyebrow">{eyebrow}</p><h1>{title}</h1>
-    <p className="intro">Considered details. Statement graphics. Pieces made to mean something. Select a piece to explore its details or try it on in the 3D studio.</p>
-    <ProductGrid items={items} />
+    <p className="intro">The AURAÈ first drop. Six pieces, made to stand out. Tap any piece to see the details or try it in the 3D Studio.</p>
+    <div className="collection-grid">{items.map((p,i) => <a className="collection-card" key={p.id} href={"#/product/"+p.id}>
+      <div className="collection-image"><img src={p.image} alt={p.name} loading="lazy" /><span>VIEW PIECE ↗</span></div>
+      <small className="collection-desc">{String(i+1).padStart(2,"0")} / {p.category.toUpperCase()}</small>
+      <h2>{p.name}</h2>
+      <p className="product-description">{p.description}</p>
+    </a>)}</div>
   </section>;
-}
-
-function ProductGrid({ items }) {
-  return <div className="product-grid">{items.map((product,index) => <article className="product-card" key={product.id}>
-    <a className={"product-visual visual-" + index} href={"#/product/" + product.id} aria-label={"View " + product.name}><span className="visual-mark">AURAÈ</span><small>0{index+1} / COLLECTION 01</small><i>{product.category.toUpperCase()}</i></a>
-    <div className="product-meta"><div><small>{product.category.toUpperCase()}</small><h2><a href={"#/product/" + product.id}>{product.name}</a></h2></div><a className="product-arrow" href={"#/product/" + product.id} aria-label={"View " + product.name}>↗</a></div>
-    <p>{product.description}</p><a className="textlink" href={"#/product/" + product.id}>VIEW DETAILS ↗</a>
-  </article>)}</div>;
 }
 
 function ProductPage({ product, onAdd }) {
   const [size,setSize] = useState(product.sizes[0] || "");
-  return <section className="product-detail">
-    <div className={"product-detail-visual visual-" + products.indexOf(product)}><span>AURAÈ</span><small>COLLECTION 01</small></div>
-    <div className="product-detail-copy"><p className="eyebrow">{product.category.toUpperCase()} / AURAÈ</p><h1>{product.name}</h1><p className="product-tag">“{product.tagline}”</p><p>{product.description}</p>
-      <div className="price-note">Price and availability are confirmed directly with AURAÈ before an order is finalised.</div>
-      <span className="eyebrow">SELECT SIZE</span><div className="sizes">{product.sizes.map((option) => <button key={option} className={size === option ? "size-option selected" : "size-option"} onClick={() => setSize(option)} type="button">{option}</button>)}</div>
-      <div className="product-actions"><button className="pill primary" onClick={() => onAdd(product,size)} type="button">ADD TO BAG ＋</button><a className="pill outline" href={whatsapp("Hello AURAÈ, I'm interested in " + product.name + (size ? " in size " + size : "") + ". Please confirm price and availability.")} target="_blank" rel="noreferrer">ASK ON WHATSAPP ↗</a></div>
+  const [added,setAdded] = useState(false);
+  return <section className="product-page">
+    <div className="product-image"><img src={product.image} alt={product.name} /></div>
+    <div className="product-info">
+      <p className="eyebrow">{product.category.toUpperCase()} / AURAÈ</p>
+      <h1>{product.name}</h1>
+      <p className="product-tag">“{product.tagline}”</p>
+      <p>{product.description}</p>
+      <div className="notice"><span className="notice-dot" />Price and availability are confirmed directly with AURAÈ before your order is finalised.</div>
+      <div className="size-block"><span className="eyebrow">SELECT SIZE</span><div className="sizes">{product.sizes.map((option) => <button key={option} className={"size-option"+(size===option?" selected":"")} onClick={() => setSize(option)} type="button" aria-pressed={size===option}>{option}</button>)}</div></div>
+      <div className="product-actions">
+        <button className="pill primary" onClick={() => {onAdd(product,size);setAdded(true)}} type="button">ADD TO BAG ＋</button>
+        <a className="pill outline" href={whatsapp("Hello AURAÈ, I'm interested in "+product.name+" in size "+size+". Please confirm price and availability.")} target="_blank" rel="noreferrer">ASK ON WHATSAPP ↗</a>
+      </div>
+      {added && <p className="added-note" role="status">{product.name} added to your bag.</p>}
       <a className="textlink" href="#/studio">TRY IT IN THE 3D STUDIO ↗</a>
     </div>
   </section>;
 }
 
 function LookbookPage() {
-  return <section className="catalog"><p className="eyebrow">AURAÈ / VISUAL DIARY</p><h1>COLLECTION <i>01.</i></h1><p className="intro">Three signatures. One unmistakable point of view.</p><ProductGrid items={products} /></section>;
+  return <section className="catalog"><p className="eyebrow">AURAÈ / THE VISUAL DIARY</p><h1>COLLECTION <i>01.</i></h1><p className="intro">The first AURAÈ drop. Take a closer look at every piece.</p>
+    <div className="lookbook-grid">{products.map((p,i)=><figure key={p.id}><a href={"#/product/"+p.id}><img src={p.image} alt={p.name} loading="lazy"/></a><figcaption>0{i+1} / {p.name.toUpperCase()}</figcaption></figure>)}</div>
+  </section>;
 }
 function AboutPage() {
-  return <section className="about-page"><p className="eyebrow">WHY AURAÈ EXISTS</p><h1>MADE FOR<br/><i>THE BECOMING.</i></h1><p>AURAÈ is independent streetwear built around a simple idea: what you wear can remind you who you are and where you are headed.</p><p>Dreams are the vision. Faith is the anchor. You are the becoming. Every print and every detail is a small reminder to move with intention.</p><a className="pill primary" href={contactUrl} target="_blank" rel="noreferrer">TALK TO AURAÈ ↗</a></section>;
+  return <section className="about-page"><p className="eyebrow">WHY AURAÈ EXISTS</p><h1>MADE FOR<br/><i>THE BECOMING.</i></h1><p>AURAÈ is independent streetwear built around a simple idea: what you wear can remind you who you are and where you are going.</p><p>Dreams are the vision. Faith is the anchor. You are the becoming. Every print and every detail is a reminder to move with intention.</p><a className="pill primary" href={contactUrl} target="_blank" rel="noreferrer">TALK TO AURAÈ ↗</a></section>;
 }
-function EmptyPage({title}) { return <section className="catalog empty-state"><p className="eyebrow">AURAÈ</p><h1>{title}</h1><a className="pill primary" href="#/">RETURN HOME ↗</a></section>; }
+function EmptyPage({title}) { return <section className="catalog empty-state"><p className="eyebrow">AURAÈ</p><h1>{title}</h1><a className="pill primary" href="#/">BACK HOME ↗</a></section>; }
 function Footer() {
-  return <footer className="footer"><div className="footer-main"><a className="wordmark" href="#/">AURAÈ<span>✳</span></a><p>DREAMS. FAITH. YOU.</p><a href={contactUrl} target="_blank" rel="noreferrer">HAVE A QUESTION? SAY HELLO ↗</a></div><nav className="footer-nav"><a href="#/shop">SHOP</a><a href="#/collections">COLLECTIONS</a><a href="#/studio">3D STUDIO</a><a href="#/about">OUR STORY</a></nav><small>© {new Date().getFullYear()} AURAÈ. ALL RIGHTS RESERVED.</small></footer>;
+  return <footer className="footer"><div className="footer-main"><a className="wordmark" href="#/">AURAÈ<span>✳</span></a><p>DREAMS. FAITH. YOU.</p><a className="footer-contact" href={contactUrl} target="_blank" rel="noreferrer">HAVE A QUESTION? SAY HELLO ↗</a></div><nav className="footer-nav"><a href="#/shop">SHOP</a><a href="#/collections">COLLECTION</a><a href="#/studio">3D STUDIO</a><a href="#/lookbook">LOOKBOOK</a><a href="#/about">OUR STORY</a></nav><small>© {new Date().getFullYear()} AURAÈ. ALL RIGHTS RESERVED.</small></footer>;
 }
 export default function App() { return <CartProvider><AppShell /></CartProvider>; }
