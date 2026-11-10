@@ -1,51 +1,93 @@
 const glb = (n) => `${import.meta.env.BASE_URL}models/${n}`;
 
-// The three current AURAÈ drop styles. Prices remain unlisted until confirmed.
 export const MANNEQUIN_MODEL = glb("mannequin.glb");
+
+// Collection 01 — the six designs supplied for the AURAÈ drop.
+// Garment GLBs can replace the procedural fitting-room previews when supplied.
 export const products = [
   {
-    id: "aurae-spider-shorts",
-    name: "AURAÈ Spider Shorts",
-    category: "Shorts",
-    slot: "bottom",
+    id: "aurae-wing-graphic-tee",
+    name: "Wing Graphic Tee",
+    category: "T-Shirts",
+    slot: "top",
     price: 0,
-    tagline: "Move with intention.",
-    description: "Heather-grey shorts with white drawcords, the black spider graphic and AURAÈ signature branding.",
+    tagline: "Make your own mark.",
+    description: "Black oversized tee with the AURAÈ wing emblem on the front and bold graphic artwork across the back.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    model: glb("aurae-wing-graphic-tee.glb"),
+    color: "#090909",
+    available: true
+  },
+  {
+    id: "aurae-wing-tank",
+    name: "Wing Graphic Tank",
+    category: "Tanks",
+    slot: "top",
+    price: 0,
+    tagline: "Same energy. New shape.",
+    description: "Black tank with contrast white trim, the wing emblem on the front and oversized artwork on the back.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    model: glb("aurae-wing-tank.glb"),
+    color: "#090909",
+    available: true
+  },
+  {
+    id: "aurae-number-17-jersey",
+    name: "Number 17 Jersey",
+    category: "Jerseys",
+    slot: "top",
+    price: 0,
+    tagline: "Made to stand out.",
+    description: "Black and charcoal AURAÈ jersey with contour graphics, a clean front crest and bold number 17 on the back.",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    model: glb("aurae-number-17-jersey.glb"),
+    color: "#171717",
+    available: true
+  },
+  {
+    id: "aurae-vision-polo",
+    name: "Vision Polo",
+    category: "Polos",
+    slot: "top",
+    price: 0,
+    tagline: "Look closer.",
+    description: "Deep burgundy fitted polo with a clean AURAÈ chest mark and detailed face artwork across the back.",
     sizes: ["S", "M", "L", "XL"],
-    model: glb("aurae-spider-shorts.glb"),
-    color: "#bfc0c4",
+    model: glb("aurae-vision-polo.glb"),
+    color: "#501321",
     available: true
   },
   {
     id: "aurae-thorn-shirt",
-    name: "AURAÈ Thorn Shirt",
+    name: "Thorn Button Shirt",
     category: "Shirts",
     slot: "top",
     price: 0,
-    tagline: "Never ordinary.",
-    description: "Red short-sleeve button-up with the black thorn illustration, AURAÈ front wordmark and signature back crest.",
+    tagline: "No quiet entrances.",
+    description: "Bold red short-sleeve button shirt with black thorn artwork on the front and back.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     model: glb("aurae-thorn-shirt.glb"),
-    color: "#d5241c",
+    color: "#d52b1e",
     available: true
   },
   {
-    id: "aurae-money-maker-tee",
-    name: "AURAÈ Money Maker Tee",
-    category: "T-Shirts",
-    slot: "top",
+    id: "aurae-spider-shorts",
+    name: "Spider Shorts",
+    category: "Shorts",
+    slot: "bottom",
     price: 0,
-    tagline: "Dreams into motion.",
-    description: "Oversized black tee with a red AURAÈ front mark and bold Money Maker artwork on the back.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    model: glb("aurae-money-maker-tee.glb"),
-    color: "#0d0d10",
+    tagline: "Move your way.",
+    description: "Heather-grey relaxed shorts with white drawcords, a bold black spider graphic and AURAÈ signature branding.",
+    sizes: ["S", "M", "L", "XL"],
+    model: glb("aurae-spider-shorts.glb"),
+    color: "#bfc0c4",
     available: true
   }
 ];
+
 export const byId = Object.fromEntries(products.map((product) => [product.id, product]));
 export const presets = [
-  { name: "LOOK 01 · SPIDER SHORTS", outfit: { top: null, bottom: "aurae-spider-shorts", accessory: null } },
-  { name: "LOOK 02 · THORN SHIRT", outfit: { top: "aurae-thorn-shirt", bottom: null, accessory: null } },
-  { name: "LOOK 03 · MONEY MAKER", outfit: { top: "aurae-money-maker-tee", bottom: null, accessory: null } }
+  { name: "LOOK 01 · WING TEE", outfit: { top: "aurae-wing-graphic-tee", bottom: "aurae-spider-shorts", accessory: null } },
+  { name: "LOOK 02 · NUMBER 17", outfit: { top: "aurae-number-17-jersey", bottom: "aurae-spider-shorts", accessory: null } },
+  { name: "LOOK 03 · THORN SHIRT", outfit: { top: "aurae-thorn-shirt", bottom: "aurae-spider-shorts", accessory: null } }
 ];
