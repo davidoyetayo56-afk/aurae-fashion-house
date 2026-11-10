@@ -78,7 +78,7 @@ function HomePage() {
     </div>
     <div className="home-premium-tiles">
       {products.slice(0,4).map((p,i) => <a className="home-premium-tile" key={p.id} href={"#/product/"+p.id}>
-        <img src={p.image} alt={p.name} loading={i===0?"eager":"lazy"} />
+        <img src={p.image} alt={p.name} loading={i===0?"eager":"lazy"} onError={(event) => { event.currentTarget.style.display = "none"; }} />
         <span className="home-premium-tile-shade" />
         <span className="home-premium-tile-number">0{i+1} / AURAÈ</span>
         <span className="home-premium-tile-copy"><strong>{p.name}</strong><small>{p.category.toUpperCase()} · COLLECTION 01</small></span>
@@ -93,7 +93,7 @@ function CatalogPage({ title, eyebrow, items }) {
     <p className="eyebrow">{eyebrow}</p><h1>{title}</h1>
     <p className="intro">The AURAÈ first drop. Six pieces, made to stand out. Tap any piece to see the details or try it in the 3D Studio.</p>
     <div className="collection-grid">{items.map((p,i) => <a className="collection-card" key={p.id} href={"#/product/"+p.id}>
-      <div className="collection-image"><img src={p.image} alt={p.name} loading="lazy" /><span>VIEW PIECE ↗</span></div>
+      <div className="collection-image"><img src={p.image} alt={p.name} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }} /><span>VIEW PIECE ↗</span></div>
       <small className="collection-desc">{String(i+1).padStart(2,"0")} / {p.category.toUpperCase()}</small>
       <h2>{p.name}</h2>
       <p className="product-description">{p.description}</p>
@@ -105,7 +105,7 @@ function ProductPage({ product, onAdd }) {
   const [size,setSize] = useState(product.sizes[0] || "");
   const [added,setAdded] = useState(false);
   return <section className="product-page">
-    <div className="product-image"><img src={product.image} alt={product.name} /></div>
+    <div className="product-image"><img src={product.image} alt={product.name} onError={(event) => { event.currentTarget.style.display = "none"; }} /></div>
     <div className="product-info">
       <p className="eyebrow">{product.category.toUpperCase()} / AURAÈ</p>
       <h1>{product.name}</h1>
@@ -125,7 +125,7 @@ function ProductPage({ product, onAdd }) {
 
 function LookbookPage() {
   return <section className="catalog"><p className="eyebrow">AURAÈ / THE VISUAL DIARY</p><h1>COLLECTION <i>01.</i></h1><p className="intro">The first AURAÈ drop. Take a closer look at every piece.</p>
-    <div className="lookbook-grid">{products.map((p,i)=><figure key={p.id}><a href={"#/product/"+p.id}><img src={p.image} alt={p.name} loading="lazy"/></a><figcaption>0{i+1} / {p.name.toUpperCase()}</figcaption></figure>)}</div>
+    <div className="lookbook-grid">{products.map((p,i)=><figure key={p.id}><a href={"#/product/"+p.id}><img src={p.image} alt={p.name} loading="lazy" onError={(event) => { event.currentTarget.style.display = "none"; }}/></a><figcaption>0{i+1} / {p.name.toUpperCase()}</figcaption></figure>)}</div>
   </section>;
 }
 function AboutPage() {
