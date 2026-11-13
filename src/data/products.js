@@ -1,3 +1,4 @@
+const asset = (n) => `${import.meta.env.BASE_URL}images/collection-01/${n}`;
 const glb = (n) => `${import.meta.env.BASE_URL}models/${n}`;
 
 export const MANNEQUIN_MODEL = glb("mannequin.glb");
@@ -7,7 +8,7 @@ export const MANNEQUIN_MODEL = glb("mannequin.glb");
 export const products = [
   {
     id: "aurae-wing-graphic-tee",
-    image: "/images/collection-01/wing-graphic-tee.webp",
+    image: asset("wing-graphic-tee.webp"),
     name: "Wing Graphic Tee",
     category: "T-Shirts",
     slot: "top",
@@ -21,7 +22,7 @@ export const products = [
   },
   {
     id: "aurae-wing-tank",
-    image: "/images/collection-01/wing-tank.webp",
+    image: asset("wing-tank.webp"),
     name: "Wing Graphic Tank",
     category: "Tanks",
     slot: "top",
@@ -35,7 +36,7 @@ export const products = [
   },
   {
     id: "aurae-number-17-jersey",
-    image: "/images/collection-01/number-17-jersey.webp",
+    image: asset("number-17-jersey.webp"),
     name: "Number 17 Jersey",
     category: "Jerseys",
     slot: "top",
@@ -49,7 +50,7 @@ export const products = [
   },
   {
     id: "aurae-vision-polo",
-    image: "/images/collection-01/vision-polo.webp",
+    image: asset("vision-polo.webp"),
     name: "Vision Polo",
     category: "Polos",
     slot: "top",
@@ -63,7 +64,7 @@ export const products = [
   },
   {
     id: "aurae-thorn-shirt",
-    image: "/images/collection-01/thorn-button-shirt.webp",
+    image: asset("thorn-button-shirt.webp"),
     name: "Thorn Button Shirt",
     category: "Shirts",
     slot: "top",
@@ -77,7 +78,7 @@ export const products = [
   },
   {
     id: "aurae-spider-shorts",
-    image: "/images/collection-01/spider-shorts.webp",
+    image: asset("spider-shorts.webp"),
     name: "Spider Shorts",
     category: "Shorts",
     slot: "bottom",
